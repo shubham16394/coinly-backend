@@ -12,4 +12,12 @@ export default class ExpenseService implements IExpenseService {
     async addExpense(expense: IExpense): Promise<IExpense> {
         return await this.expenseDao.addExpense(expense);
     }
+
+    async getDailyData(email: string, sDate: Date, eDate: Date): Promise<IExpense[]>{
+        return await this.expenseDao.getDailyExpData(email, sDate, eDate);
+    }
+
+    async getMonthlyData(email: string, sDate: Date, eDate: Date): Promise<IExpense[]>{
+        return await this.expenseDao.getMonthlyExpData(email, sDate, eDate);
+    }
 }

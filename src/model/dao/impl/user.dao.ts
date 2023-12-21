@@ -29,7 +29,6 @@ export default class UserDao implements IUserDao {
 
     async findById(_id: mongoose.Schema.Types.ObjectId): Promise<IUser | null> {
         const userData = await this.userModel.findById(_id)
-        console.log('userData', userData);
         return userData;
     }
 }

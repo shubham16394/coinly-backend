@@ -17,8 +17,14 @@ export default class ExpenseRoute {
     private init() {
         router.post(
             "/:email/:date/addexpense",
-            // authenticate,
+            authenticate,
             this.expenseController.addExpense.bind(this.expenseController)
+        );
+
+        router.get(
+            "/:email/:date/:datetype/getexpdata",
+            authenticate,
+            this.expenseController.getExpenseData.bind(this.expenseController)
         );
     }
 
