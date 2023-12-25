@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import IDaoFactory from "../../model/dao/IDaoFactory";
 import IExpenseDao from "../../model/dao/interface/IExpense.dao";
 import IExpense from "../../model/entity/expense.entity";
@@ -19,5 +20,13 @@ export default class ExpenseService implements IExpenseService {
 
     async getMonthlyData(email: string, sDate: Date, eDate: Date): Promise<IExpense[]>{
         return await this.expenseDao.getMonthlyExpData(email, sDate, eDate);
+    }
+
+    async editExpense(expId: string, updateData: object): Promise<IExpense>{
+        return await this.expenseDao.editExpense(expId, updateData);
+    }
+
+    async deleteExpense(expId: string): Promise<any> {
+        return await this.expenseDao.deleteExpense(expId);
     }
 }

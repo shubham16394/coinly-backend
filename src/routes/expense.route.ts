@@ -26,6 +26,19 @@ export default class ExpenseRoute {
             authenticate,
             this.expenseController.getExpenseData.bind(this.expenseController)
         );
+
+        router.put(
+            "/:expId/editexp",
+            authenticate,
+            this.expenseController.editExpense.bind(this.expenseController)
+        );
+
+        router.delete(
+            "/:expId/deleteexp",
+            authenticate,
+            this.expenseController.deleteExpense.bind(this.expenseController)
+        )
+
     }
 
 } 

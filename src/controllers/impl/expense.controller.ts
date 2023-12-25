@@ -56,5 +56,30 @@ export default class ExpenseController implements IExpenseController {
         }
     }
 
+    async editExpense(req: Request, res: Response): Promise<void> {
+        try {
+            const expId = req.params?.expId;
+            const updateData = req.body?.updateData;
+            const updatedExpData = await this.expenseService.editExpense(expId,updateData);
+            sendReponse(res, 201, "Successfully updated expense data", true, updatedExpData);
+        }
+        catch(err) {
+            console.log('Error in updating expense data', err);
+            sendReponse(res, 500, "Internal Server Error", false);
+        }
+    }
+
+    async deleteExpense(req: Request, res: Response): Promise<void> {
+        try {
+            const expId = req.params?.expId;
+            const deletedData = await this.expenseService.deleteExpense(expId);
+            sendReponse(res, 201, "Successfully deleted expense data", true, deletedData);
+        }
+        catch(err) {
+            console.log('Error in deleting expense data', err);
+            sendReponse(res, 500, "Internal Server Error", false);
+        }
+    }
+
 
 }

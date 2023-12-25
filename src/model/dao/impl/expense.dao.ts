@@ -145,4 +145,14 @@ export default class ExpenseDao implements IExpenseDao {
     ];
     return query;
   }
+
+  async editExpense(expId: string, updateData: object): Promise<IExpense> {
+    const updatedExpData: IExpense = await this.expenseModel.findByIdAndUpdate(expId, updateData, {new: true, upsert: true});
+    return updatedExpData;
+  }
+
+  async deleteExpense(expId: string): Promise<any> {
+    const deletedData: any = await this.expenseModel.findByIdAndDelete(expId, {includeResultMetadata: true});
+    return deletedData;
+  }
 }
