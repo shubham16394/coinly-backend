@@ -42,7 +42,7 @@ export default class ExpenseDao implements IExpenseDao {
         $match: {
           email,
           createdAt: { $gte: sDate, $lte: eDate },
-        },
+        }
       },
       {
         $project: {
@@ -75,7 +75,7 @@ export default class ExpenseDao implements IExpenseDao {
           createdAt: 1,
           updatedAt: 1,
           createdBy: 1,
-        },
+        }
       },
     ];
     return query;
@@ -87,7 +87,7 @@ export default class ExpenseDao implements IExpenseDao {
         $match: {
           email,
           createdAt: { $gte: sDate, $lte: eDate },
-        },
+        }
       },
       {
         $project: {
@@ -140,7 +140,7 @@ export default class ExpenseDao implements IExpenseDao {
           createdAt: 1,
           updatedAt: 1,
           createdBy: 1,
-        },
+        }
       },
     ];
     return query;

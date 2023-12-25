@@ -3,7 +3,7 @@ export default interface IBudget {
     type: string;
     email: string;
     createdBy: string;
-    isDeleted: boolean;
-    createdAt: Date;
-    updatedAt: Date;
+    isDeleted?: boolean;
+    createdAt?: Date;
+    updatedAt?: Date;
 }

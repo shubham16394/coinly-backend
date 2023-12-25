@@ -1,7 +1,7 @@
 import IExpenseService from "../../services/interface/IExpense.service";
 import IExpenseController from "../interface/IExpense.controller";
 import { Request, Response, NextFunction } from "express";
-import { sendReponse } from "../../misc/util"; 
+import { sendReponse, getStartEndDate } from "../../misc/util"; 
 import IExpense from "../../model/entity/expense.entity";
 
 
@@ -40,12 +40,7 @@ export default class ExpenseController implements IExpenseController {
     
             }
             else if(dateType === 'monthly') {
-                const startDate = new Date(new Date(date.setHours(0,0,0,0)).setDate(1));
-                const currentMonth = date.getMonth();
-                const currentYear = date.getFullYear();
-                const firstDayOfNextMonth = new Date(currentYear, currentMonth + 1, 1);
-                const lastDayOfMonth = new Date((firstDayOfNextMonth as any) - 1);
-                const endDate = new Date(lastDayOfMonth.setHours(23,59,59,999));
+                const { startDate, endDate } = getStartEndDate(date);
                 const expData = await this.expenseService.getMonthlyData(email, startDate, endDate);
                 sendReponse(res, 201, "Successfully got monthly expense data", true, expData);
             }    
