@@ -75,9 +75,9 @@ export default class UserController implements IUserController {
         failureFlash: true,
       },
       (err: Error, user: IUser, info: any) => {
+        console.log('Login status', 'err', err, 'user', user, 'info', info);
         if (err) {
-          return sendReponse(res, 500, "Internal Server Error", false);
-
+          return sendReponse(res, 401, "Unauthorized", false);
         } else {
           req.login(user, (loginErr) => {
             if (loginErr) {

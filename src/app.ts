@@ -1,4 +1,5 @@
 import express from "express";
+import path from "path";
 import session from "express-session";
 import MongoHandler from "./dbConnection";
 import mongoose, { Schema } from "mongoose";
@@ -50,6 +51,7 @@ app.use(
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'public/dist/coinly')));
 
 async function createAndStartServer() {
   connection = await setupDBConnection();
@@ -69,7 +71,7 @@ async function createAndStartServer() {
     store: mongoStore,
     cookie: {
       httpOnly: false,
-      secure: false, // make true for not showing cookie in client
+      secure: true, // make true for not showing cookie in client
       sameSite: "none",
     },
   };
@@ -169,6 +171,9 @@ function setRoutes() {
   app.use(baseUrl + "/user", userRouter.getRouter());
   app.use(baseUrl + "/budget", budgetRouter.getRouter());
   app.use(baseUrl + "/expense", expenseRouter.getRouter());
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public/dist/coinly/index.html'));
+  });
 }
 
 createAndStartServer();

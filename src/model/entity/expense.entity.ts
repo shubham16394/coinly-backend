@@ -3,8 +3,8 @@ export default interface IExpense {
     type: string;
     email: string;
     comment: string;
-    isDeleted: boolean;
+    isDeleted?: boolean;
     createdAt: Date;
     updatedAt?: Date;
-    createdBy: string;
+    createdBy?: string;
 }
