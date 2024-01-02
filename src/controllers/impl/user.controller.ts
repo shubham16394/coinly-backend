@@ -10,43 +10,56 @@ export default class UserController implements IUserController {
   constructor(public userService: IUserService) {}
 
   async createUser(req: Request, res: Response): Promise<void> {
-    const user: ReqUser = {
-      firstName: req.body?.firstName,
-      lastName: req.body?.lastName,
-      email: req.body?.email,
-      password: encrypt(req.body?.password),
-      confirmPassword: req.body?.confirmPassword,
-      isDeleted: false,
-    };
-
-    await this.userService.createUser(user);
-    sendReponse(res, 201, "Signup successful", true);
+    try {
+      const user: ReqUser = {
+        firstName: req.body?.firstName?.toLowerCase(),
+        lastName: req.body?.lastName?.toLowerCase(),
+        email: req.body?.email?.toLowerCase(),
+        password: encrypt(req.body?.password),
+        confirmPassword: req.body?.confirmPassword,
+        isDeleted: false,
+      };
+      await this.userService.createUser(user);
+      sendReponse(res, 201, "Signup successful", true);
+    } catch (err) {
+      console.log("Error in signup", err);
+      sendReponse(res, 500, "Signup unsuccessful", false);
+    }
   }
 
-  validateUserData(req: Request, res: Response, next: NextFunction): void {
+  async validateUserData(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
     const body = req?.body;
 
     console.log("Signup req body", body);
+    const user = await this.userService.getUserDetails(req?.body.email);
 
-    if (!(body?.firstName && typeof body?.firstName === "string")) {
-        sendReponse(res, 403, "firstName should be string", false);
-    }
-    if (!(body?.lastName && typeof body?.lastName === "string")) {
-        sendReponse(res, 403, "lastName should be string", false);
-    }
-    if (
-      !(
-        body?.email &&
-        typeof body?.email === "string" &&
-        EmailValidator.validate(body?.email)
-      )
-    ) {
-      sendReponse(res, 403, "Provide a valid email", false);
-    }
-    if (body?.password && body?.password !== body?.confirmPassword) {
-        sendReponse(res, 403, "Passwords did not match", false);
+    if (user) {
+      sendReponse(res, 409, "User exist", false);
     } else {
-      next();
+      if (!(body?.firstName && typeof body?.firstName === "string")) {
+        sendReponse(res, 403, "firstName should be string", false);
+      }
+      if (!(body?.lastName && typeof body?.lastName === "string")) {
+        sendReponse(res, 403, "lastName should be string", false);
+      }
+      if (
+        !(
+          body?.email &&
+          typeof body?.email === "string" &&
+          EmailValidator.validate(body?.email)
+        )
+      ) {
+        sendReponse(res, 403, "Provide a valid email", false);
+      }
+      if (body?.password && body?.password !== body?.confirmPassword) {
+        sendReponse(res, 403, "Passwords did not match", false);
+      } else {
+        next();
+      }
     }
   }
 
@@ -57,11 +70,9 @@ export default class UserController implements IUserController {
     } else {
       const userData = await this.userService.getUserDetails(email);
       if (userData) {
-          sendReponse(res, 201, "User found", true);
-
+        sendReponse(res, 201, "User found", true);
       } else {
         sendReponse(res, 404, "User not found", false);
-
       }
     }
   }
@@ -75,13 +86,13 @@ export default class UserController implements IUserController {
         failureFlash: true,
       },
       (err: Error, user: IUser, info: any) => {
-        console.log('Login status', 'err', err, 'user', user, 'info', info);
+        console.log("Login status", "err", err, "user", user, "info", info);
         if (err) {
-          return sendReponse(res, 401, "Unauthorized", false);
+          return sendReponse(res, 500, "Invalid email or password", false);
         } else {
           req.login(user, (loginErr) => {
             if (loginErr) {
-              return sendReponse(res, 500, "Login Failed", false);
+              return sendReponse(res, 401, "Unauthorized", false);
             }
             return sendReponse(res, 201, "Login Successful", true);
           });
