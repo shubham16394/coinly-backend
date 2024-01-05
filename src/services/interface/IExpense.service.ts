@@ -6,4 +6,6 @@ export default interface IExpenseService {
     getMonthlyData(email: string, sDate: Date, eDate: Date): Promise<IExpense[]>;
     editExpense(expId: string, updateData: object): Promise<IExpense>;
     deleteExpense(expId: string): Promise<any>;
+    getDailyCategoryData(email: string, sDate: Date, eDate: Date): Promise<any[]>;
+    getMonthlyCategoryData(email: string, sDate: Date, eDate: Date): Promise<any[]>;
 }

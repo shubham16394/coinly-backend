@@ -42,7 +42,7 @@ export default class ExpenseDao implements IExpenseDao {
         $match: {
           email,
           createdAt: { $gte: sDate, $lte: eDate },
-        }
+        },
       },
       {
         $project: {
@@ -75,7 +75,7 @@ export default class ExpenseDao implements IExpenseDao {
           createdAt: 1,
           updatedAt: 1,
           createdBy: 1,
-        }
+        },
       },
     ];
     return query;
@@ -87,7 +87,7 @@ export default class ExpenseDao implements IExpenseDao {
         $match: {
           email,
           createdAt: { $gte: sDate, $lte: eDate },
-        }
+        },
       },
       {
         $project: {
@@ -140,19 +140,63 @@ export default class ExpenseDao implements IExpenseDao {
           createdAt: 1,
           updatedAt: 1,
           createdBy: 1,
-        }
+        },
       },
     ];
     return query;
   }
 
   async editExpense(expId: string, updateData: object): Promise<IExpense> {
-    const updatedExpData: IExpense = await this.expenseModel.findByIdAndUpdate(expId, updateData, {new: true, upsert: true});
+    const updatedExpData: IExpense = await this.expenseModel.findByIdAndUpdate(
+      expId,
+      updateData,
+      { new: true, upsert: true }
+    );
     return updatedExpData;
   }
 
   async deleteExpense(expId: string): Promise<any> {
-    const deletedData: any = await this.expenseModel.findByIdAndDelete(expId, {includeResultMetadata: true});
+    const deletedData: any = await this.expenseModel.findByIdAndDelete(expId, {
+      includeResultMetadata: true,
+    });
     return deletedData;
   }
+
+  async getDailyExpCategoryData(email: string, sDate: Date, eDate: Date): Promise<any[]> {
+    const dailyCatData = await this.expenseModel.aggregate([
+      {
+        $match: {
+          email,
+          createdAt: { $gte: sDate, $lte: eDate },
+        },
+      },
+      {
+        $group: {
+          _id: "$type",
+          totalValue: { $sum: "$value" }
+        }
+      }
+    ])
+    return dailyCatData;
+  };
+
+  async getMonthlyExpCategoryData(email: string, sDate: Date, eDate: Date): Promise<any[]> {
+    const monthlyCatData = await this.expenseModel.aggregate([
+      {
+        $match: {
+          email,
+          createdAt: { $gte: sDate, $lte: eDate },
+        },
+      },
+      {
+        $group: {
+          _id: "$type",
+          totalValue: { $sum: "$value" }
+        }
+      }
+    ])
+    return monthlyCatData;
+  };
+
+
 }

@@ -29,4 +29,12 @@ export default class ExpenseService implements IExpenseService {
     async deleteExpense(expId: string): Promise<any> {
         return await this.expenseDao.deleteExpense(expId);
     }
+
+    async getDailyCategoryData(email: string, sDate: Date, eDate: Date): Promise<any[]>{
+        return await this.expenseDao.getDailyExpCategoryData(email, sDate, eDate);
+    }
+
+    async getMonthlyCategoryData(email: string, sDate: Date, eDate: Date): Promise<any[]>{
+        return await this.expenseDao.getMonthlyExpCategoryData(email, sDate, eDate);
+    }
 }

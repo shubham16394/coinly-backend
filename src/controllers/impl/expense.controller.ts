@@ -78,5 +78,30 @@ export default class ExpenseController implements IExpenseController {
         }
     }
 
+    async getExpCategoryData(req: Request, res: Response): Promise<void> {
+        try {
+            const email = req.params?.email;
+            const date = new Date(req.params?.date);
+            const dateType = req.params?.datetype;
+            if(dateType === 'daily') {
+                const startDate = new Date(date.setHours(0,0,0,0));
+                const endDate = new Date(date.setHours(23,59,59,999));
+                const expData = await this.expenseService.getDailyCategoryData(email, startDate, endDate);
+                sendReponse(res, 201, "Successfully got daily expense category data", true, expData);
+    
+            }
+            else if(dateType === 'monthly') {
+                const { startDate, endDate } = getStartEndDate(date);
+                const expData = await this.expenseService.getMonthlyCategoryData(email, startDate, endDate);
+                sendReponse(res, 201, "Successfully got monthly expense category data", true, expData);
+            }    
+
+        }
+        catch(err) {
+            console.log('Error in getting expense caategory data', err);
+            sendReponse(res, 500, "Internal Server Error", false);
+        }
+    }
+
 
 }

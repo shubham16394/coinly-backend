@@ -6,4 +6,6 @@ export default interface IExpenseDao {
     getMonthlyExpData(email: string, sDate: Date, eDate: Date): Promise<IExpense[]>;
     editExpense(expId: string, updateData: object): Promise<IExpense>;
     deleteExpense(expId: string): Promise<any>;
+    getDailyExpCategoryData(email: string, sDate: Date, eDate: Date): Promise<any[]>;
+    getMonthlyExpCategoryData(email: string, sDate: Date, eDate: Date): Promise<any[]>;
 }

@@ -39,6 +39,12 @@ export default class ExpenseRoute {
             this.expenseController.deleteExpense.bind(this.expenseController)
         )
 
+        router.get(
+            "/:email/:date/:datetype/getexpcatdata",
+            // authenticate,
+            this.expenseController.getExpCategoryData.bind(this.expenseController)
+        )
+
     }
 
 } 
