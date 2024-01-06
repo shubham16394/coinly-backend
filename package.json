@@ -8,7 +8,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start:prod": "node build/dist/app.js",
     "start:dev": "node build/dist/app.js",
-    "build:prod": "tsc",
+    "build:prod": "npm install & tsc",
     "build:dev": "tsc"
   },
   "keywords": [],
