@@ -1,5 +1,4 @@
 import 'dotenv/config';
-console.log('ENV', process.env);
 import express from "express";
 import path from "path";
 import session from "express-session";
