@@ -6,7 +6,7 @@ export default interface IUser {
     lastName: string;
     email: string;
     password: string;
-    isDeleted: boolean;
+    idDeleted: boolean;
     googleMetaData?: object;
     createdAt: Date;
     updatedAt: Date;

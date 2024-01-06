@@ -94,7 +94,9 @@ export default class UserController implements IUserController {
             if (loginErr) {
               return sendReponse(res, 401, "Unauthorized", false);
             }
-            return sendReponse(res, 201, "Login Successful", true);
+            const {email, firstName, lastName, idDeleted} = user;
+            console.log(email, firstName, lastName, idDeleted)
+            return sendReponse(res, 201, "Login Successful", true, {email, firstName, lastName, idDeleted});
           });
         }
       }
