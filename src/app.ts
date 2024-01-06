@@ -1,8 +1,10 @@
+import 'dotenv/config';
+console.log('ENV', process.env);
 import express from "express";
 import path from "path";
 import session from "express-session";
 import MongoHandler from "./dbConnection";
-import mongoose, { Schema } from "mongoose";
+import mongoose from "mongoose";
 import cookieParser from "cookie-parser";
 import passport from "passport";
 const MongoStore = require("connect-mongo");
