@@ -30,7 +30,6 @@ export function getStartEndDate(date: Date) {
 }
 
 export function authenticate(req: Request, res: Response, next: NextFunction) {
-    console.log('req.user user route', req.user)
     if (req.isAuthenticated()) {
       return next();
     }
@@ -43,8 +42,8 @@ export function isDateInUTC(date: Date): boolean {
     return momentDate.isUTC();
 }
 
-export function getISTTime(date: Date) {
-    const istMoment: moment.Moment = moment.utc(date).tz('Asia/Kolkata');
+export function getISTTime(dateStamp: string) {
+    const istMoment: moment.Moment = moment.utc(dateStamp).tz('Asia/Kolkata');
     console.log('istMoment.toDate', istMoment.toDate());
     return istMoment.toDate();
 }

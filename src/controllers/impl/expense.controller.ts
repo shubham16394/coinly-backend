@@ -32,7 +32,8 @@ export default class ExpenseController implements IExpenseController {
     async getExpenseData(req: Request, res: Response): Promise<void> {
         try{
             const email = req.params?.email;
-            const date = isDateInUTC(new Date(req.params?.date)) ? getISTTime(new Date(req.params?.date)) : new Date(req.params?.date);
+            // const date = isDateInUTC(new Date(req.params?.date)) ? getISTTime(new Date(req.params?.date)) : new Date(req.params?.date);
+            const date = getISTTime(new Date(req.params?.date).toISOString());
             const dateType = req.params?.datetype;
             if(dateType === 'daily') {
                 const startDate = new Date(date.setHours(0,0,0,0));
@@ -81,7 +82,8 @@ export default class ExpenseController implements IExpenseController {
     async getExpCategoryData(req: Request, res: Response): Promise<void> {
         try {
             const email = req.params?.email;
-            const date = isDateInUTC(new Date(req.params?.date)) ? getISTTime(new Date(req.params?.date)) : new Date(req.params?.date);
+            // const date = isDateInUTC(new Date(req.params?.date)) ? getISTTime(new Date(req.params?.date)) : new Date(req.params?.date);
+            const date = getISTTime(new Date(req.params?.date).toISOString());
             const dateType = req.params?.datetype;
             if(dateType === 'daily') {
                 const startDate = new Date(date.setHours(0,0,0,0));

@@ -139,7 +139,6 @@ function setDependencies(connection: mongoose.Connection) {
 
   passport.serializeUser(function (user: any, done) {
     try {
-      console.log("serializeUser", user);
       done(null, user._id);
     } catch (error) {
       console.error("Error during serialization:", error);

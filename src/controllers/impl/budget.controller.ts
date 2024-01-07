@@ -10,7 +10,8 @@ export default class BudgetController implements IBudgetController {
     async add(req: Request, res: Response): Promise<void> {
         try{
             const email = req.params?.email;
-            const date = isDateInUTC(new Date(req.params?.date)) ? getISTTime(new Date(req.params?.date)) : new Date(req.params?.date);
+            // const date = isDateInUTC(new Date(req.params?.date)) ? getISTTime(new Date(req.params?.date)) : new Date(req.params?.date);
+            const date = getISTTime(new Date(req.params?.date).toISOString());
             const type = req.params?.type;
             const budgetData = req.body?.budgetData;
             const data = await this.budgetService.add(email, date, type, budgetData);
@@ -25,7 +26,8 @@ export default class BudgetController implements IBudgetController {
     async get(req: Request, res: Response): Promise<void> {
         try{
             const email = req.params?.email;
-            const date = isDateInUTC(new Date(req.params?.date)) ? getISTTime(new Date(req.params?.date)) : new Date(req.params?.date);
+            // const date = isDateInUTC(new Date(req.params?.date)) ? getISTTime(new Date(req.params?.date)) : new Date(req.params?.date);
+            const date = getISTTime(new Date(req.params?.date).toISOString());
             const type = req.params?.type;
             const { startDate, endDate } = getStartEndDate(date);
             console.log(`get budget data ${type}`, 'date', date, 'startDate', startDate, 'endDate', endDate);

@@ -8,6 +8,8 @@ export const UserSchema: mongoose.Schema = new mongoose.Schema({
     password: {type: String},
     googleMetaData: {type: Object},
     idDeleted: {type: Boolean, default: false},
-    createdAt: {type: Date, default: isDateInUTC(new Date()) ? getISTTime(new Date()) : new Date()},
-    updatedAt: {type: Date, default: isDateInUTC(new Date()) ? getISTTime(new Date()) : new Date()}
+    // createdAt: {type: Date, default: isDateInUTC(new Date()) ? getISTTime(new Date()) : new Date()},
+    // updatedAt: {type: Date, default: isDateInUTC(new Date()) ? getISTTime(new Date()) : new Date()}
+    createdAt: {type: Date, default: getISTTime(new Date().toISOString())},
+    updatedAt: {type: Date, default: getISTTime(new Date().toISOString())}
 });
