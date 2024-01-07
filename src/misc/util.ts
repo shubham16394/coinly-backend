@@ -1,5 +1,6 @@
 
 import bcrypt = require("bcryptjs");
+import moment from 'moment-timezone';
 import { NextFunction, Request, Response } from "express";
 
 export function encrypt(arg: string): string {
@@ -34,4 +35,16 @@ export function authenticate(req: Request, res: Response, next: NextFunction) {
       return next();
     }
     res.redirect("");
+}
+
+export function isDateInUTC(date: Date): boolean {
+    const momentDate = moment(date);
+    console.log('momentDate.isUTC', momentDate.isUTC());
+    return momentDate.isUTC();
+}
+
+export function getISTTime(date: Date) {
+    const istMoment: moment.Moment = moment.utc(date).tz('Asia/Kolkata');
+    console.log('istMoment.toDate', istMoment.toDate());
+    return istMoment.toDate();
 }
