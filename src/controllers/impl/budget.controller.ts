@@ -2,6 +2,7 @@ import IBudgetService from "../../services/interface/IBudget.service";
 import IBudgetController from "../interface/IBudget.controller";
 import { Request, Response } from "express";
 import { sendReponse, getStartEndDate } from "../../misc/util"; 
+import moment from 'moment-timezone';
 
 
 export default class BudgetController implements IBudgetController {
@@ -13,7 +14,7 @@ export default class BudgetController implements IBudgetController {
             const date = new Date(req.params?.date);
             const type = req.params?.type;
             const budgetData = req.body?.budgetData;
-            const data = await this.budgetService.add(email, date, type, budgetData);
+            const data = await this.budgetService.add(email, moment.tz(date, 'Asia/Kolkata').toDate(), type, budgetData);
             sendReponse(res, 201, `Successfully created ${type}`, true, data)    
         }
         catch(err) {

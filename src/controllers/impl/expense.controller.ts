@@ -18,7 +18,7 @@ export default class ExpenseController implements IExpenseController {
                 value: req.body?.value,
                 comment: req.body?.comment,
                 type: req.body?.type,
-                createdAt: date
+                createdAt: moment.tz(date, 'Asia/Kolkata').toDate()
             };
     
             const expenseData = await this.expenseService.addExpense(expense);
@@ -59,7 +59,7 @@ export default class ExpenseController implements IExpenseController {
         try {
             const expId = req.params?.expId;
             const updateData = req.body?.updateData;
-            const updatedExpData = await this.expenseService.editExpense(expId,updateData);
+            const updatedExpData = await this.expenseService.editExpense(expId, updateData);
             sendReponse(res, 201, "Successfully updated expense data", true, updatedExpData);
         }
         catch(err) {

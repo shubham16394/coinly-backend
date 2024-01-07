@@ -1,4 +1,5 @@
 import mongoose = require('mongoose');
+import moment from 'moment-timezone';
 
 export const ExpenseSchema: mongoose.Schema = new mongoose.Schema({
     email: {type: String, ref: 'users', required: true},
@@ -7,6 +8,6 @@ export const ExpenseSchema: mongoose.Schema = new mongoose.Schema({
     comment: {type: String}, 
     idDeleted: {type: Boolean, default: false},
     createdBy: {type: String, required: true, default: 'user'}, // => user, system
-    createdAt: {type: Date, default: new Date()},
-    updatedAt: {type: Date, default: new Date()}
+    createdAt: {type: Date, default: moment.tz(new Date(), 'Asia/Kolkata').toDate()},
+    updatedAt: {type: Date, default: moment.tz(new Date(), 'Asia/Kolkata').toDate()}
 });

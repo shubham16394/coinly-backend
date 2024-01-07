@@ -1,4 +1,5 @@
 import mongoose = require('mongoose');
+import moment from 'moment-timezone';
 
 export const UserSchema: mongoose.Schema = new mongoose.Schema({
     firstName: {type: String, required: true},
@@ -7,6 +8,6 @@ export const UserSchema: mongoose.Schema = new mongoose.Schema({
     password: {type: String},
     googleMetaData: {type: Object},
     idDeleted: {type: Boolean, default: false},
-    createdAt: {type: Date, default: new Date()},
-    updatedAt: {type: Date, default: new Date()}
+    createdAt: {type: Date, default: moment.tz(new Date(), 'Asia/Kolkata').toDate()},
+    updatedAt: {type: Date, default: moment.tz(new Date(), 'Asia/Kolkata').toDate()}
 });
