@@ -1,5 +1,4 @@
 import mongoose = require('mongoose');
-import { isDateInUTC, getISTTime } from "../../../misc/util"; 
 
 export const ExpenseSchema: mongoose.Schema = new mongoose.Schema({
     email: {type: String, ref: 'users', required: true},
@@ -8,8 +7,6 @@ export const ExpenseSchema: mongoose.Schema = new mongoose.Schema({
     comment: {type: String}, 
     idDeleted: {type: Boolean, default: false},
     createdBy: {type: String, required: true, default: 'user'}, // => user, system
-    // createdAt: {type: Date, default: isDateInUTC(new Date()) ? getISTTime(new Date()) : new Date()},
-    // updatedAt: {type: Date, default: isDateInUTC(new Date()) ? getISTTime(new Date()) : new Date()}
-    createdAt: {type: Date, default: getISTTime(new Date().toISOString())},
-    updatedAt: {type: Date, default: getISTTime(new Date().toISOString())}
+    createdAt: {type: Date, default: new Date()},
+    updatedAt: {type: Date, default: new Date()}
 });

@@ -1,8 +1,9 @@
 import IExpenseService from "../../services/interface/IExpense.service";
 import IExpenseController from "../interface/IExpense.controller";
-import { Request, Response, NextFunction } from "express";
-import { sendReponse, getStartEndDate, isDateInUTC, getISTTime } from "../../misc/util"; 
+import { Request, Response } from "express";
+import { sendReponse, getStartEndDate } from "../../misc/util"; 
 import IExpense from "../../model/entity/expense.entity";
+import moment from 'moment-timezone';
 
 
 export default class ExpenseController implements IExpenseController {
@@ -32,12 +33,12 @@ export default class ExpenseController implements IExpenseController {
     async getExpenseData(req: Request, res: Response): Promise<void> {
         try{
             const email = req.params?.email;
-            // const date = isDateInUTC(new Date(req.params?.date)) ? getISTTime(new Date(req.params?.date)) : new Date(req.params?.date);
-            const date = getISTTime(new Date(req.params?.date).toISOString());
+            const date = new Date(req.params?.date);
+            const istMoment = moment.tz(date, 'Asia/Kolkata');
             const dateType = req.params?.datetype;
             if(dateType === 'daily') {
-                const startDate = new Date(date.setHours(0,0,0,0));
-                const endDate = new Date(date.setHours(23,59,59,999));
+                const startDate = istMoment.clone().startOf('day').toDate();
+                const endDate = istMoment.clone().endOf('day').toDate();
                 const expData = await this.expenseService.getDailyData(email, startDate, endDate);
                 sendReponse(res, 201, "Successfully got daily expense data", true, expData);
     
@@ -82,22 +83,20 @@ export default class ExpenseController implements IExpenseController {
     async getExpCategoryData(req: Request, res: Response): Promise<void> {
         try {
             const email = req.params?.email;
-            // const date = isDateInUTC(new Date(req.params?.date)) ? getISTTime(new Date(req.params?.date)) : new Date(req.params?.date);
-            const date = getISTTime(new Date(req.params?.date).toISOString());
+            const date = new Date(req.params?.date);
+            const istMoment = moment.tz(date, 'Asia/Kolkata');
             const dateType = req.params?.datetype;
             if(dateType === 'daily') {
-                const startDate = new Date(date.setHours(0,0,0,0));
-                const endDate = new Date(date.setHours(23,59,59,999));
+                const startDate = istMoment.clone().startOf('day').toDate();
+                const endDate = istMoment.clone().endOf('day').toDate();
                 const expData = await this.expenseService.getDailyCategoryData(email, startDate, endDate);
                 sendReponse(res, 201, "Successfully got daily expense category data", true, expData);
-    
             }
             else if(dateType === 'monthly') {
                 const { startDate, endDate } = getStartEndDate(date);
                 const expData = await this.expenseService.getMonthlyCategoryData(email, startDate, endDate);
                 sendReponse(res, 201, "Successfully got monthly expense category data", true, expData);
             }    
-
         }
         catch(err) {
             console.log('Error in getting expense caategory data', err);

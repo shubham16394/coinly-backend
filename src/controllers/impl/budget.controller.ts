@@ -1,7 +1,7 @@
 import IBudgetService from "../../services/interface/IBudget.service";
 import IBudgetController from "../interface/IBudget.controller";
 import { Request, Response } from "express";
-import { sendReponse, getStartEndDate, isDateInUTC, getISTTime } from "../../misc/util"; 
+import { sendReponse, getStartEndDate } from "../../misc/util"; 
 
 
 export default class BudgetController implements IBudgetController {
@@ -10,8 +10,7 @@ export default class BudgetController implements IBudgetController {
     async add(req: Request, res: Response): Promise<void> {
         try{
             const email = req.params?.email;
-            // const date = isDateInUTC(new Date(req.params?.date)) ? getISTTime(new Date(req.params?.date)) : new Date(req.params?.date);
-            const date = getISTTime(new Date(req.params?.date).toISOString());
+            const date = new Date(req.params?.date);
             const type = req.params?.type;
             const budgetData = req.body?.budgetData;
             const data = await this.budgetService.add(email, date, type, budgetData);
@@ -26,8 +25,7 @@ export default class BudgetController implements IBudgetController {
     async get(req: Request, res: Response): Promise<void> {
         try{
             const email = req.params?.email;
-            // const date = isDateInUTC(new Date(req.params?.date)) ? getISTTime(new Date(req.params?.date)) : new Date(req.params?.date);
-            const date = getISTTime(new Date(req.params?.date).toISOString());
+            const date = new Date(req.params?.date);
             const type = req.params?.type;
             const { startDate, endDate } = getStartEndDate(date);
             console.log(`get budget data ${type}`, 'req.params?.date', req.params?.date, 'date', date, 'startDate', startDate, 'endDate', endDate);

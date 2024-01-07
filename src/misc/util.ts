@@ -19,14 +19,23 @@ export function sendReponse(res: Response, code: number, message: string, status
     return res.status(code).send(resData);
 }
 
+// export function getStartEndDate(date: Date) {
+//     const startDate = new Date(new Date(date.setHours(0,0,0,0)).setDate(1));
+//     const currentMonth = date.getMonth();
+//     const currentYear = date.getFullYear();
+//     const firstDayOfNextMonth = new Date(currentYear, currentMonth + 1, 1);
+//     const lastDayOfMonth = new Date((firstDayOfNextMonth as any) - 1);
+//     const endDate = new Date(lastDayOfMonth.setHours(23,59,59,999));
+//     return {startDate, endDate};
+// }
+
 export function getStartEndDate(date: Date) {
-    const startDate = new Date(new Date(date.setHours(0,0,0,0)).setDate(1));
-    const currentMonth = date.getMonth();
-    const currentYear = date.getFullYear();
-    const firstDayOfNextMonth = new Date(currentYear, currentMonth + 1, 1);
-    const lastDayOfMonth = new Date((firstDayOfNextMonth as any) - 1);
-    const endDate = new Date(lastDayOfMonth.setHours(23,59,59,999));
-    return {startDate, endDate};
+    const istMoment = moment.tz(date, 'Asia/Kolkata');
+
+    const startDate = istMoment.clone().startOf('month').toDate();
+    const endDate = istMoment.clone().endOf('month').toDate();
+
+    return { startDate, endDate };
 }
 
 export function authenticate(req: Request, res: Response, next: NextFunction) {
@@ -36,14 +45,10 @@ export function authenticate(req: Request, res: Response, next: NextFunction) {
     res.redirect("");
 }
 
-export function isDateInUTC(date: Date): boolean {
-    const momentDate = moment(date);
-    console.log('momentDate.isUTC', momentDate.isUTC());
-    return momentDate.isUTC();
-}
-
-export function getISTTime(dateStamp: string) {
-    const istMoment: moment.Moment = moment.utc(dateStamp).tz('Asia/Kolkata');
-    console.log('istMoment.toDate', istMoment.toDate());
-    return istMoment.toDate();
+export function getISTTime(date: moment.Moment) {
+    const istMoment: moment.Moment = date.tz('Asia/Kolkata');
+    const utcOffsetMinutes: number = istMoment.utcOffset();
+    const istDate: Date = new Date(istMoment.format());
+    istDate.setUTCMinutes(istDate.getUTCMinutes() - utcOffsetMinutes);
+    return istDate;
 }

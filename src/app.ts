@@ -1,4 +1,6 @@
 import 'dotenv/config';
+import { env } from 'node:process';
+console.log(`NODE_ENV ${env.NODE_ENV}`)
 import express from "express";
 import path from "path";
 import session from "express-session";
