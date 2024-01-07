@@ -18,25 +18,25 @@ export default class BudgetRoute {
 
         router.post(
             "/:email/:date/:type/add",
-            // authenticate,
+            authenticate,
             this.budgetController.add.bind(this.budgetController)
         );
 
         router.get(
             "/:email/:date/:type/get",
-            // authenticate,
+            authenticate,
             this.budgetController.get.bind(this.budgetController)
         );
 
         router.put(
             "/:bId/update",
-            // authenticate,
+            authenticate,
             this.budgetController.update.bind(this.budgetController)
         );
 
         router.delete(
             "/:bId/delete",
-            // authenticate,
+            authenticate,
             this.budgetController.delete.bind(this.budgetController)
         )
     }

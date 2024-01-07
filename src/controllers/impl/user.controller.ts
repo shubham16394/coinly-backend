@@ -82,7 +82,7 @@ export default class UserController implements IUserController {
       "local",
       {
         successRedirect: "/dashboard",
-        failureRedirect: "/login",
+        failureRedirect: "/",
         failureFlash: true,
       },
       (err: Error, user: IUser, info: any) => {
@@ -107,6 +107,6 @@ export default class UserController implements IUserController {
     req.logout((err: any) => {
       console.log("Error occurred during logout", err);
     });
-    res.redirect("/login");
+    sendReponse(res, 201, 'User logged out successfully', true);
   };
 }

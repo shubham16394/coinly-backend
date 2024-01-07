@@ -71,9 +71,9 @@ async function createAndStartServer() {
     name: "coinly",
     store: mongoStore,
     cookie: {
-      httpOnly: false,
-      secure: true, // make true for not showing cookie in client
-      sameSite: "none",
+      httpOnly: true,
+      secure: false, // make true for not showing cookie in client
+      sameSite: false,
     },
   };
 
@@ -173,7 +173,7 @@ function setRoutes() {
   app.use(baseUrl + "/budget", budgetRouter.getRouter());
   app.use(baseUrl + "/expense", expenseRouter.getRouter());
   app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public/dist/coinly/index.html'));
+    res.sendFile(path.join(__dirname, '../../public/dist/coinly/index.html'));
   });
 }
 

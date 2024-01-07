@@ -33,5 +33,5 @@ export function authenticate(req: Request, res: Response, next: NextFunction) {
     if (req.isAuthenticated()) {
       return next();
     }
-    res.redirect("/login");
+    res.redirect("");
 }
