@@ -28,7 +28,7 @@ export default class BudgetController implements IBudgetController {
             const date = new Date(req.params?.date);
             const type = req.params?.type;
             const { startDate, endDate } = getStartEndDate(date);
-            console.log(`get budget data ${type}`, 'startDate', startDate, 'endDate', endDate);
+            console.log(`get budget data ${type}`, 'date', date, 'startDate', startDate, 'endDate', endDate);
             const data = await this.budgetService.get(email, startDate, endDate, type);
             sendReponse(res, 201, `Successfully got ${type} data`, true, data)    
         }

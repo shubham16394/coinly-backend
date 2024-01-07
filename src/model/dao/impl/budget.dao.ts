@@ -34,6 +34,7 @@ export default class BudgetDao implements IBudgetDao {
     type: string
   ): Promise<IBudget[]> {
     const query = this.getQuery(email, startDate, endDate, type);
+    console.log(`Get budget type ${type}`, query);
     const data: IBudget[] = await this.budegtModel.aggregate(query);
     return data;
   }
